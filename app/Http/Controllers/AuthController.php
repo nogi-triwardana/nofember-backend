@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-// use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Validator;
 
 
@@ -36,8 +35,27 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        
+
+        $credentials = [
+            'email'     => $request->email,
+            'password' => $request->password,
+        ];
+
+        $user = User::where('email', $request->email)->first();
+
+        if(Auth::attempt($credentials)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Login berhasil!',
+                'data' => $user
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Email atau password anda salah'
+        ]);
     }
 }
