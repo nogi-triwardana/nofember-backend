@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-// use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Validator;
 use App\Exceptions\RegisterException;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -27,7 +26,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'city' => 'required|string',
             'phone' => 'required|string'
@@ -37,9 +36,10 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Nama wajib diisi.',
+            'name.required' => 'Nama wajib diisi',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Email yang diinput harus format email',
+            'email.unique' => 'Email anda sudah terdaftar',
             'password.required' => 'Password wajib diisi',
             'city.required' => 'Kota wajib diisi',
             'phone.required' => 'Nomor telepon wajib diisi'
