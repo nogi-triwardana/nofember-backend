@@ -9,7 +9,11 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
-
+use Mail;
+use Carbon\Carbon;
+use DB;
+use App\Mail\forgotPasswordMail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -57,5 +61,24 @@ class AuthController extends Controller
             'success' => false,
             'message' => 'Email atau password anda salah'
         ]);
+    }
+
+    public function forgotPassword(Request $request) 
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $token = Str::random(64);
+
+        DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        Mail::to($request->email)->send(new forgotPasswordMail($request->email));
+
+        return back();
     }
 }

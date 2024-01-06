@@ -17,8 +17,6 @@ use App\Http\Controllers\AuthController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
-});
-
-Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
+    Route::post('/forgot-password', 'forgotPassword');
 });
