@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,12 +67,8 @@ class AuthController extends Controller
         ], JsonResponse::HTTP_BAD_REQUEST);
     }
 
-    public function forgotPassword(Request $request) 
+    public function forgotPassword(ForgotPasswordRequest $request) 
     {
-        $request->validate([
-            'email' => 'required|email|exists:users'
-        ]);
-
         $token = Str::random(64);
 
         DB::table('password_reset_tokens')->insert([
