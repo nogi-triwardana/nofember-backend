@@ -6,14 +6,17 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 use Mail;
+use Hash;
 use Carbon\Carbon;
 use DB;
 use App\Mail\forgotPasswordMail;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
@@ -60,13 +63,13 @@ class AuthController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Email atau password anda salah'
-        ]);
+        ], JsonResponse::HTTP_BAD_REQUEST);
     }
 
     public function forgotPassword(Request $request) 
     {
         $request->validate([
-            'email' => 'required|email'
+            'email' => 'required|email|exists:users'
         ]);
 
         $token = Str::random(64);
@@ -79,6 +82,36 @@ class AuthController extends Controller
 
         Mail::to($request->email)->send(new forgotPasswordMail($request->email));
 
-        return back();
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Verifikasi reset password telah dikirim ke email anda'
+        ]);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $updatePassword = DB::table('password_reset_tokens')->where([ 
+            'email' => $request->email,
+            'token' => $request->token
+        ])->first();
+
+        if(!$updatePassword) {
+            return response()->json([
+                'code' => 400,
+                'status' => false,
+                'message' => 'invalid token!'
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $user = User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+
+        DB::table('password_reset_tokens')->where([ 'email' => $request->email])->delete();
+
+        return response()->json([
+            'code' => 200,
+            'status' => true,
+            'message' => 'Password anda telah direset!'
+        ]);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 
 class RegisterException extends Exception
