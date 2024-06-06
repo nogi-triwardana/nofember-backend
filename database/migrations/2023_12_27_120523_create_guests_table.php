@@ -12,17 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('guests', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('invitation_id');
-            $table->unsignedBigInteger('session_invitation_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('invitation_id')->references('id')->on('invitations')->onDelete('cascade');
+            $table->foreignUuid('session_invitation_id')->references('id')->on('session_invitations')->onDelete('cascade');
             $table->string('name');
             $table->integer('quota');
             $table->string('phone', 15);
             $table->string('email')->unique();
             $table->timestamps();
-
-            $table->foreign('invitation_id')->references('id')->on('invitation')->onDelete('cascade');
-            $table->foreign('session_invitation_id')->references('id')->on('session_invitation')->onDelete('cascade');
         });
     }
 
