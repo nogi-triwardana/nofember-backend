@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('address');
             $table->string('email')->unique();
             $table->string('phone', 15);
@@ -23,8 +23,6 @@ return new class extends Migration
             $table->string('tiktok_link');
             $table->string('linkedin_link');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('session_invitation', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('invitation_id');
-            $table->unsignedBigInteger('user_id');
+        Schema::create('session_invitations', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('invitation_id')->references('id')->on('invitations')->onDelete('cascade');
+            $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('session_name');
             $table->dateTimeTz('akad_time');
             $table->dateTimeTz('resepsi_time');
             $table->timestamps();
-
-            $table->foreign('invitation_id')->references('id')->on('invitation')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
