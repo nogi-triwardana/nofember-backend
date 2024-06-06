@@ -22,7 +22,7 @@ class UserQuery extends Query
     return [
       'id' => [
         'name' => 'id',
-        'type' => Type::int()
+        'type' => Type::string()
       ],
       'name' => [
         'name' => 'name',
