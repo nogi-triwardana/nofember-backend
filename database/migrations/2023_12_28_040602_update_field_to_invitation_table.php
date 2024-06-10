@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('invitation', function (Blueprint $table) {
+        Schema::table('invitations', function (Blueprint $table) {
             $table->string('akad_time')->after('akad_date');
             $table->string('akad_address')->after('akad_time');
             $table->string('akad_location')->after('akad_address');

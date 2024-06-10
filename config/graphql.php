@@ -77,6 +77,7 @@ return [
             'query' => [
                 // ExampleQuery::class,
                 'users' => App\GraphQL\Queries\User\UserQuery::class,
+                'invitation' => App\GraphQL\Queries\Invitation\InvitationQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
@@ -84,6 +85,7 @@ return [
                 'createUser' => App\GraphQL\Mutations\User\CreateUserMutation::class,
                 'updateUser' => App\GraphQL\Mutations\User\UpdateUserMutation::class,
                 'deleteUser' => App\GraphQL\Mutations\User\DeleteUserMutation::class,
+                'createInvitation' => App\GraphQL\Mutations\Invitation\CreateInvitationMutation::class,
             ],
             // The types only available in this schema
             'types' => [
@@ -116,6 +118,7 @@ return [
         // \Rebing\GraphQL\Support\UploadType::class,
         'User' => App\GraphQL\Types\User\UserType::class,
         'Login' => App\GraphQL\Types\Auth\LoginType::class,
+        'Invitation' => App\GraphQL\Types\Invitation\InvitationType::class
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.

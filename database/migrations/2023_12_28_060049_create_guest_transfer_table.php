@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guest_transfer', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('guest_id');
+        Schema::create('guest_transfers', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->foreignUuid('guest_id')->references('id')->on('guests')->onDelete('cascade');
             $table->string('image');
             $table->integer('nominal_transfer');
             $table->string('account_number');
             $table->timestamps();
-
-            $table->foreign('guest_id')->references('id')->on('guests')->onDelete('cascade');
         });
     }
 
