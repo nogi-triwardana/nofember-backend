@@ -81,6 +81,7 @@ return [
             ],
             'mutation' => [
                 // ExampleMutation::class,
+                'login' => App\GraphQL\Mutations\Auth\LoginMutation::class,
                 'createUser' => App\GraphQL\Mutations\User\CreateUserMutation::class,
                 'updateUser' => App\GraphQL\Mutations\User\UpdateUserMutation::class,
                 'deleteUser' => App\GraphQL\Mutations\User\DeleteUserMutation::class,
@@ -116,6 +117,7 @@ return [
         // ExampleRelationType::class,
         // \Rebing\GraphQL\Support\UploadType::class,
         'User' => App\GraphQL\Types\User\UserType::class,
+        'Login' => App\GraphQL\Types\Auth\LoginType::class,
         'Invitation' => App\GraphQL\Types\Invitation\InvitationType::class
     ],
 
