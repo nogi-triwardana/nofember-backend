@@ -76,16 +76,10 @@ return [
         'default' => [
             'query' => [
                 // ExampleQuery::class,
-                'users' => App\GraphQL\Queries\User\UserQuery::class,
-                'invitation' => App\GraphQL\Queries\Invitation\InvitationQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
                 'login' => App\GraphQL\Mutations\Auth\LoginMutation::class,
-                'createUser' => App\GraphQL\Mutations\User\CreateUserMutation::class,
-                'updateUser' => App\GraphQL\Mutations\User\UpdateUserMutation::class,
-                'deleteUser' => App\GraphQL\Mutations\User\DeleteUserMutation::class,
-                'createInvitation' => App\GraphQL\Mutations\Invitation\CreateInvitationMutation::class,
             ],
             // The types only available in this schema
             'types' => [
@@ -99,8 +93,35 @@ return [
             'method' => ['GET', 'POST'],
 
             // An array of middlewares, overrides the global ones
-            'execution_middleware' => null,
+            'execution_middleware' => [],
         ],
+
+        'auth' => [
+            'query' => [
+                // ExampleQuery::class,
+                'users' => App\GraphQL\Queries\User\UserQuery::class,
+                'invitation' => App\GraphQL\Queries\Invitation\InvitationQuery::class,
+                'me' => App\GraphQL\Queries\Auth\Me::class,
+            ],
+
+            'mutation' => [
+                'createUser' => App\GraphQL\Mutations\User\CreateUserMutation::class,
+                'updateUser' => App\GraphQL\Mutations\User\UpdateUserMutation::class,
+                'deleteUser' => App\GraphQL\Mutations\User\DeleteUserMutation::class,
+                'createInvitation' => App\GraphQL\Mutations\Invitation\CreateInvitationMutation::class,
+            ],
+
+            // Laravel HTTP middleware
+            'middleware' => [
+                'auth' => \App\Http\Middleware\AuthenticateGraphQL::class,
+            ],
+
+            // Which HTTP methods to support; must be given in UPPERCASE!
+            'method' => ['GET', 'POST'],
+
+            // An array of middlewares, overrides the global ones
+            'execution_middleware' => [],
+        ]
     ],
 
     // The global types available to all schemas.

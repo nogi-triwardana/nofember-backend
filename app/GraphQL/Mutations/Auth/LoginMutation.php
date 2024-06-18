@@ -47,7 +47,7 @@ class LoginMutation extends Mutation
     }
 
     $user = Auth::user();
-    $token = $user->createToken('token')->accessToken->token;
+    $token = $user->createToken('token')->plainTextToken;
 
     return [
       'user' => $user,
